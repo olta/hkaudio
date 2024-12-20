@@ -1,0 +1,12 @@
+[Unit]
+Description=Spotify-client
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/librespot --verbose --onevent=/usr/bin/on-librespot-event.sh --emit-sink-events --mixer=softvol --initial-volume=50 --volume-ctrl=log --disable-audio-cache --name=librespot --backend=alsa --device=hw:0 --zeroconf-backend=libmdns
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
