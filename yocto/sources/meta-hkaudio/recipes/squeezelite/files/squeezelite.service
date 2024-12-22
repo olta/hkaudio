@@ -1,0 +1,12 @@
+[Unit]
+Description=Squeezelite
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/squeezelite -n '@@HKAUDIO_DEVICENAME@@'
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

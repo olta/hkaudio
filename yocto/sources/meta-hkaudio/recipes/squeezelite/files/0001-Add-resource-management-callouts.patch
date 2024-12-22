@@ -1,0 +1,50 @@
+From ae0b74175a2cd84b6f8a8cf9c0291765118851ba Mon Sep 17 00:00:00 2001
+From: Oliver Tappe <zooey@hirschkaefer.de>
+Date: Sat, 21 Dec 2024 22:33:34 +0100
+Subject: [PATCH] Add resource management callouts.
+
+---
+ output_alsa.c | 6 ++++++
+ slimproto.c   | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/output_alsa.c b/output_alsa.c
+index e310239..d8a6e88 100644
+--- a/output_alsa.c
++++ b/output_alsa.c
+@@ -267,6 +267,7 @@ static void alsa_close(void) {
+ 	if ((err = snd_pcm_close(pcmp)) < 0) {
+ 		LOG_INFO("snd_pcm_close error: %s", snd_strerror(err));
+ 	}
++	system("res-man.sh mark-as-stopped squeezelite");
+ }
+ 
+ bool test_open(const char *device, unsigned rates[], bool userdef_rates) {
+@@ -352,6 +353,11 @@ static int alsa_open(const char *device, unsigned sample_rate, unsigned alsa_buf
+ 	}
+ 
+ 	LOG_INFO("opening device at: %u", sample_rate);
++	
++	if (system("res-man.sh switch-to squeezelite") != 0) {
++		LOG_ERROR("unable to use res-man to switch to squeezelite");
++		return -1;
++	}
+ 
+ 	bool retry;
+ 	do {
+diff --git a/slimproto.c b/slimproto.c
+index 959fe74..17fc729 100644
+--- a/slimproto.c
++++ b/slimproto.c
+@@ -727,7 +727,7 @@ static void slimproto_run() {
+ 				_sendSTMo = true;
+ 				sentSTMo = true;
+ 			}
+-			if (output.state == OUTPUT_STOPPED && output.idle_to && (now - output.stop_time > output.idle_to)) {
++			if (output.state == OUTPUT_STOPPED && (system("res-man.sh should-stop squeezelite") == 0 || output.idle_to && (now - output.stop_time > output.idle_to))) {
+ 				output.state = OUTPUT_OFF;
+ 				LOG_DEBUG("output timeout");
+ 			}
+-- 
+2.25.1
+

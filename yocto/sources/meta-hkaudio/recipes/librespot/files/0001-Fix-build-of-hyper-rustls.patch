@@ -1,7 +1,7 @@
 From 8b5b7e3779dbf9780119420ae3eded4d9f739814 Mon Sep 17 00:00:00 2001
 From: Oliver Tappe <zooey@hirschkaefer.de>
 Date: Tue, 17 Dec 2024 20:47:01 +0000
-Subject: [PATCH] Attempt to fix build
+Subject: [PATCH] Fix build of hyper-rustls
 
 ---
  core/Cargo.toml | 7 ++++++-

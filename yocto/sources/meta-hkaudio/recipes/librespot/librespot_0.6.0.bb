@@ -9,8 +9,10 @@ DEPENDS += "alsa-lib pkgconfig-native"
 
 SRC_URI += " \
     git://github.com/librespot-org/librespot;protocol=https;branch=dev \
-    file://0001-Attempt-to-fix-build.patch \
+    file://0001-Fix-build-of-hyper-rustls.patch \
+    file://0002-Add-resource-management-callouts.patch \
     file://librespot.service \
+    file://ask-librespot-to-stop.sh \
     file://on-librespot-event.sh \
 "
 
@@ -25,9 +27,13 @@ CARGO_BUILD_FLAGS:remove = "--frozen"
 SYSTEMD_SERVICE:${PN} = "librespot.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
+RDEPENDS:${PN} += "bash"
+
 do_install:append() {
     install -d ${D}/${bindir}
-    install -m 644 ${WORKDIR}/on-librespot-event.sh ${D}/${bindir}
+    install -m 755 ${WORKDIR}/on-librespot-event.sh ${D}/${bindir}
+    install -m 0755 ${WORKDIR}/ask-librespot-to-stop.sh ${D}${bindir}/
     install -d ${D}/${systemd_system_unitdir}
     install -m 644 ${WORKDIR}/librespot.service ${D}/${systemd_system_unitdir}
+    sed -i 's/@@HKAUDIO_DEVICENAME@@/${HKAUDIO_DEVICENAME}/g' ${D}/${systemd_system_unitdir}/librespot.service
 }

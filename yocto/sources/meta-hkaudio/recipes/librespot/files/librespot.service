@@ -5,7 +5,7 @@ After=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/librespot --verbose --onevent=/usr/bin/on-librespot-event.sh --emit-sink-events --mixer=softvol --initial-volume=50 --volume-ctrl=log --disable-audio-cache --name=librespot --backend=alsa --device=hw:0 --zeroconf-backend=libmdns
+ExecStart=/usr/bin/librespot --onevent=/usr/bin/on-librespot-event.sh --emit-sink-events --mixer=softvol --initial-volume=50 --volume-ctrl=log --disable-audio-cache --name='@@HKAUDIO_DEVICENAME@@' --backend=alsa --device=hw:0 --zeroconf-backend=libmdns
 Restart=on-failure
 
 [Install]

@@ -7,7 +7,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -y \
     && apt-get install -y \
                bc bison build-essential chrpath cmake cpio curl dbus-x11 device-tree-compiler \
-               diffstat dosfstools flex gawk git gnupg g++ iptables iputils-ping libbz2-dev \
+               diffstat dosfstools dropbear-bin flex gawk git gnupg g++ iptables iputils-ping libbz2-dev \
                libncurses5-dev libssl-dev libusb-1.0-0-dev libzip-dev libzstd-dev locales lz4 mtools \
                nano pigz pkg-config python-is-python3 \
                python3 python3-git python3-jinja2 pylint3 python3-pip python3-pexpect python3-subunit \
