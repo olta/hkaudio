@@ -36,14 +36,6 @@ case "$cmd" in
         touch active.${target}
         echo "$0: $target successfully acquired playback"
         ;;
-    should-stop)
-        if [[ -e stop.$target ]]; then
-            echo "$0: telling $target that it should stop"
-            exit 0; 
-        else 
-            exit 5;
-        fi
-        ;;
     mark-as-stopped)
         echo "$0: $target has stopped playback"
         rm -f stop.$target active.$target

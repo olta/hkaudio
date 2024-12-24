@@ -1,4 +1,4 @@
-From ae0b74175a2cd84b6f8a8cf9c0291765118851ba Mon Sep 17 00:00:00 2001
+From 551283e6d2bfb1e202c36364c56b486c15818314 Mon Sep 17 00:00:00 2001
 From: Oliver Tappe <zooey@hirschkaefer.de>
 Date: Sat, 21 Dec 2024 22:33:34 +0100
 Subject: [PATCH] Add resource management callouts.
@@ -33,7 +33,7 @@ index e310239..d8a6e88 100644
  	bool retry;
  	do {
 diff --git a/slimproto.c b/slimproto.c
-index 959fe74..17fc729 100644
+index 959fe74..9335633 100644
 --- a/slimproto.c
 +++ b/slimproto.c
 @@ -727,7 +727,7 @@ static void slimproto_run() {
@@ -41,7 +41,7 @@ index 959fe74..17fc729 100644
  				sentSTMo = true;
  			}
 -			if (output.state == OUTPUT_STOPPED && output.idle_to && (now - output.stop_time > output.idle_to)) {
-+			if (output.state == OUTPUT_STOPPED && (system("res-man.sh should-stop squeezelite") == 0 || output.idle_to && (now - output.stop_time > output.idle_to))) {
++			if (output.state == OUTPUT_STOPPED && (access("/run/res-man/stop.squeezelite", F_OK) == 0 || output.idle_to && (now - output.stop_time > output.idle_to))) {
  				output.state = OUTPUT_OFF;
  				LOG_DEBUG("output timeout");
  			}
