@@ -29,12 +29,10 @@ S = "${WORKDIR}/git"
 
 inherit systemd
 
-EXTRA_OEMAKE = 'OPTS=""'
-
 SYSTEMD_SERVICE:${PN} = "${PN}.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
-RDEPENDS:${PN} += "bash"
+RDEPENDS:${PN} += "bash libmad mpg123"
 
 do_install() {
     install -d ${D}${bindir}
