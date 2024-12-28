@@ -5,7 +5,7 @@ After=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/squeezelite -n '@@HKAUDIO_DEVICENAME@@'
+ExecStart=/usr/bin/squeezelite -n '@@HKAUDIO_DEVICENAME@@' -d all=info
 Restart=on-failure
 
 [Install]

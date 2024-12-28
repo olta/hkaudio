@@ -6,6 +6,7 @@ cd /yocto
 cat >>conf/local.conf <<EndOfHere
 # device configuration:
 hostname:pn-base-files = "$HKAUDIO_HOSTNAME"
+HKAUDIO_ALSA_CONFIG = "$HKAUDIO_ALSA_CONFIG"
 HKAUDIO_CONFIG = "$HKAUDIO_CONFIG"
 HKAUDIO_DEVICENAME = "$HKAUDIO_DEVICENAME"
 EndOfHere
