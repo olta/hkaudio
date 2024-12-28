@@ -10,7 +10,7 @@ DEPENDS += "alsa-lib pkgconfig-native"
 SRC_URI += " \
     git://github.com/librespot-org/librespot;protocol=https;branch=dev \
     file://0001-Fix-build-of-hyper-rustls.patch \
-    file://0002-Add-resource-management-callouts.patch \
+    file://0002-Add-resource-management-check.patch \
     file://librespot.service \
     file://ask-librespot-to-stop.sh \
     file://on-librespot-event.sh \
