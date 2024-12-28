@@ -12,4 +12,5 @@ IMAGE_INSTALL += "\
   librespot \
   res-man \
   squeezelite \
+  vim \
 "
