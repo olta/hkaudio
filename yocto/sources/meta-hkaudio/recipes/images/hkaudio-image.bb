@@ -10,6 +10,7 @@ IMAGE_INSTALL += "\
   go-librespot \
   jq \
   librespot \
+  ${@'lirc' if d.getVar('HKAUDIO_LIRC', True) == '1' else ''} \
   res-man \
   squeezelite \
   vim \

@@ -23,6 +23,7 @@ SRC_URI = " \
     file://0001-Add-resource-management-callouts.patch \
     file://squeezelite.service \
     file://ask-squeezelite-to-stop.sh \
+    file://do-squeeze-cmd.sh \
 "
 
 S = "${WORKDIR}/git"
@@ -38,6 +39,8 @@ do_install() {
     install -d ${D}${bindir}
     install -m 0755 ${B}/squeezelite ${D}${bindir}/
     install -m 0755 ${WORKDIR}/ask-squeezelite-to-stop.sh ${D}${bindir}/
+    install -m 0755 ${WORKDIR}/do-squeeze-cmd.sh ${D}${bindir}/
+    sed -i 's/@@HKAUDIO_LMS_SERVER@@/${HKAUDIO_LMS_SERVER}/g' ${D}/${bindir}/do-squeeze-cmd.sh
 
     install -d ${D}${systemd_system_unitdir}
     install -m 0644 ${WORKDIR}/${PN}.service ${D}${systemd_system_unitdir}/

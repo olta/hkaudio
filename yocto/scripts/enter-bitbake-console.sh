@@ -1,14 +1,20 @@
 #!/bin/bash
 
 cd /yocto
+rm -f build/conf/local.conf
 . sources/poky/oe-init-build-env
 
 cat >>conf/local.conf <<EndOfHere
+
 # device configuration:
+DISTRO = "hkaudio"
+MACHINE = "$MACHINE"
 hostname:pn-base-files = "$HKAUDIO_HOSTNAME"
 HKAUDIO_ALSA_CONFIG = "$HKAUDIO_ALSA_CONFIG"
 HKAUDIO_CONFIG = "$HKAUDIO_CONFIG"
 HKAUDIO_DEVICENAME = "$HKAUDIO_DEVICENAME"
+HKAUDIO_LIRC = "$HKAUDIO_LIRC"
+HKAUDIO_LMS_SERVER = "$HKAUDIO_LMS_SERVER"
 EndOfHere
 
 mkdir /tmp/home
