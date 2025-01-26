@@ -1,0 +1,11 @@
+[Unit]
+Description=Room Configuration
+After=local-fs.target
+
+[Service]
+Type=simple
+RemainAfterExit=yes
+ExecStart=/usr/bin/room-config.sh
+
+[Install]
+WantedBy=basic.target

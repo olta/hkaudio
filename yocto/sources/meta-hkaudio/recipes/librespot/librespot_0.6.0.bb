@@ -35,5 +35,4 @@ do_install:append() {
     install -m 0755 ${WORKDIR}/ask-librespot-to-stop.sh ${D}${bindir}/
     install -d ${D}/${systemd_system_unitdir}
     install -m 644 ${WORKDIR}/librespot.service ${D}/${systemd_system_unitdir}
-    sed -i 's/@@HKAUDIO_DEVICENAME@@/${HKAUDIO_DEVICENAME}/g' ${D}/${systemd_system_unitdir}/librespot.service
 }

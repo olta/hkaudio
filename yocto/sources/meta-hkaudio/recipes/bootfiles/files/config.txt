@@ -1,0 +1,19 @@
+# allow access over serial console
+enable_uart=1
+
+# disable internal wifi and bluetooth
+dtoverlay=pi3-disable-bt
+dtoverlay=pi3-disable-wifi
+
+# Enable audio (loads snd_bcm2835)
+dtparam=audio=on
+
+# switch LEDs off
+dtparam=act_led_trigger=none
+dtparam=act_led_activelow=on
+
+# load required dac/amp driver
+dtoverlay=hifiberry-dac
+
+# configure IRC the way we need it
+dtoverlay=gpio-ir,gpio_pin=17,gpio_pull=down

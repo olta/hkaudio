@@ -5,11 +5,12 @@ After=network-online.target
 
 [Service]
 Type=simple
+EnvironmentFile=/etc/room-config/current
 ExecStart=/usr/bin/librespot \
                 --disable-audio-cache \
                 --emit-sink-events \
                 --initial-volume=50 \
-                --name='@@HKAUDIO_DEVICENAME@@' \
+                --name="$HKAUDIO_DEVICENAME" \
                 --onevent=/usr/bin/on-librespot-event.sh \
                 --volume-ctrl=linear
 Restart=on-failure

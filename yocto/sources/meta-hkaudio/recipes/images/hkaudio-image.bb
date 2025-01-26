@@ -12,8 +12,10 @@ IMAGE_INSTALL += "\
   go-librespot \
   jq \
   librespot \
-  ${@'lirc' if d.getVar('HKAUDIO_LIRC', True) == '1' else ''} \
+  linux-firmware-rtl8822 \
+  lirc \
   res-man \
+  room-config \
   squeezelite \
   vim \
 "

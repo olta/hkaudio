@@ -8,7 +8,7 @@ S = "${WORKDIR}"
 
 RDEPENDS:${PN} += "bash"
 
-do_install:append() {
+do_install() {
     install -d ${D}/${bindir}
     install -m 755 ${WORKDIR}/res-man.sh ${D}/${bindir}
 }

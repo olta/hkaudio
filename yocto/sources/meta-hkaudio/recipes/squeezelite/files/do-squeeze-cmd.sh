@@ -7,8 +7,10 @@ if [[ -z $cmd ]]; then
     exit 5
 fi
 
+. /etc/room-config/current
+
 id=$(cat /sys/class/net/wlan0/address)
-url=http://@@HKAUDIO_LMS_SERVER@@/jsonrpc.js
+url=http://${HKAUDIO_LMS_SERVER}/jsonrpc.js
 
 case "$cmd" in
 

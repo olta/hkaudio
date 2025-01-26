@@ -40,9 +40,7 @@ do_install() {
     install -m 0755 ${B}/squeezelite ${D}${bindir}/
     install -m 0755 ${WORKDIR}/ask-squeezelite-to-stop.sh ${D}${bindir}/
     install -m 0755 ${WORKDIR}/do-squeeze-cmd.sh ${D}${bindir}/
-    sed -i 's/@@HKAUDIO_LMS_SERVER@@/${HKAUDIO_LMS_SERVER}/g' ${D}/${bindir}/do-squeeze-cmd.sh
 
     install -d ${D}${systemd_system_unitdir}
     install -m 0644 ${WORKDIR}/${PN}.service ${D}${systemd_system_unitdir}/
-    sed -i 's/@@HKAUDIO_DEVICENAME@@/${HKAUDIO_DEVICENAME}/g' ${D}/${systemd_system_unitdir}/squeezelite.service
 }
