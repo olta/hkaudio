@@ -1,13 +1,13 @@
 begin
     prog = irexec
     button = KEY_UP
-    config = do-squeeze-cmd.sh volume-up
+    config = do-cmd.sh volume-up
 end
 
 begin
     prog = irexec
     button = KEY_DOWN
-    config = do-squeeze-cmd.sh volume-down
+    config = do-cmd.sh volume-down
 end
 
 begin
@@ -25,7 +25,7 @@ end
 begin
     prog = irexec
     button = KEY_OK
-    config = do-squeeze-cmd.sh play-pause
+    config = do-cmd.sh play-pause
 end
 
 begin
