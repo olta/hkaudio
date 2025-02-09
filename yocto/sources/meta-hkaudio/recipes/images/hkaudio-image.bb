@@ -13,6 +13,7 @@ IMAGE_INSTALL += "\
   iwd \
   jq \
   librespot \
+  linux-firmware-mt76x2 \
   linux-firmware-rtl8822 \
   lirc \
   res-man \
