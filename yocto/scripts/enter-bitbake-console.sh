@@ -9,8 +9,8 @@ cat >>conf/local.conf <<EndOfHere
 # device configuration:
 DISTRO = "hkaudio"
 MACHINE = "raspberrypi0-2w-64"
-SERIAL_CONSOLES = ""
-SERIAL_CONSOLES_CHECK = ""
+SERIAL_CONSOLES = "115200;ttyAMA0"
+SERIAL_CONSOLES_CHECK = "115200;ttyAMA0"
 EndOfHere
 
 mkdir /tmp/home
