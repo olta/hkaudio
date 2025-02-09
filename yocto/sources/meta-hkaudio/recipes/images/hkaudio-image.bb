@@ -10,6 +10,7 @@ IMAGE_INSTALL += "\
   ca-certificates \
   curl \
   go-librespot \
+  iwd \
   jq \
   librespot \
   linux-firmware-rtl8822 \

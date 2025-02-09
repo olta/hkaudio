@@ -1,0 +1,10 @@
+[Unit]
+Description=Wait for default route
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/wait-online.sh
+
+[Install]
+WantedBy=network-online.target
