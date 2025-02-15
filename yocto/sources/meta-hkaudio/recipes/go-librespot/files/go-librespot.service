@@ -1,0 +1,14 @@
+[Unit]
+Description=Spotify-client
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+Environment=HOME=/root
+ExecStartPre=/usr/bin/go-librespot-config.sh
+ExecStart=/usr/bin/go-librespot --config_dir=/etc/go-librespot
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
