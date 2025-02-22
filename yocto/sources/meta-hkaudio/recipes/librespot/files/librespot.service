@@ -1,5 +1,5 @@
 [Unit]
-Description=Spotify-client
+Description=Spotify-client (written in Rust)
 Wants=network-online.target
 After=network-online.target
 
@@ -9,10 +9,10 @@ EnvironmentFile=/etc/room-config/current
 ExecStart=/usr/bin/librespot \
                 --disable-audio-cache \
                 --emit-sink-events \
-                --initial-volume=25 \
-                --name="${HKAUDIO_DEVICENAME}" \
+                --initial-volume=50 \
+                --name="${HKAUDIO_DEVICENAME} (Rust)" \
                 --onevent=/usr/bin/on-librespot-event.sh \
-                --volume-ctrl=linear
+                --volume-ctrl=cubic
 Restart=on-failure
 
 [Install]

@@ -1,4 +1,4 @@
-From 99630a0f6373416e7562bf2dd5ea1114b7441f5a Mon Sep 17 00:00:00 2001
+From 47b031f38a652220ce55299ece3a45418dff9b1a Mon Sep 17 00:00:00 2001
 From: Oliver Tappe <zooey@hirschkaefer.de>
 Date: Sun, 22 Dec 2024 14:22:17 +0100
 Subject: [PATCH] Add resource management check to pause playback.
@@ -8,17 +8,17 @@ Subject: [PATCH] Add resource management check to pause playback.
  1 file changed, 13 insertions(+), 1 deletion(-)
 
 diff --git a/playback/src/player.rs b/playback/src/player.rs
-index 43f6361..392ac70 100644
+index 43f6361..d937269 100644
 --- a/playback/src/player.rs
 +++ b/playback/src/player.rs
-@@ -1,6 +1,7 @@
- use std::{
-     collections::HashMap,
-     fmt,
-+    fs,
+@@ -4,6 +4,7 @@ use std::{
      future::Future,
      io::{self, Read, Seek, SeekFrom},
      mem,
++    path::Path,
+     pin::Pin,
+     process::exit,
+     sync::{
 @@ -12,7 +13,7 @@ use std::{
      },
      task::{Context, Poll},
@@ -52,10 +52,10 @@ index 43f6361..392ac70 100644
                      }
 +                    
 +                    if SystemTime::now().duration_since(self.last_resource_check_time).unwrap().as_millis() > 500 {
-+                        if fs::metadata("/run/res-man/stop.librespot").is_ok() {
++                        self.last_resource_check_time = SystemTime::now();
++                        if Path::new("/run/res-man/stop.librespot").exists() {
 +                            self.handle_pause();
 +                        }
-+                        self.last_resource_check_time = SystemTime::now();
 +                    }
                  }
              }
