@@ -29,8 +29,8 @@ case "$cmd" in
             done
             if [[ -e $current_file ]]; then
                 echo "$0: $current failed to release playback after 5 seconds - forcing it ..."
-                rm -f $current_file
                 systemctl restart $current
+                rm -f $current_file stop.${current}
             fi
         done
         touch active.${target}
