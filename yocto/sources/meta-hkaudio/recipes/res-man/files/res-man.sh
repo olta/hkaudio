@@ -18,6 +18,10 @@ case "$cmd" in
         echo "$0: $target tries to acquire playback ..."
         for current_file in active.*; do
             current=${current_file:7}
+            if [[ $current == $target ]]; then
+                rm -f stop.${current}
+                continue;
+            fi
             echo "$0: need to ask $current to stop playback ..."
             touch stop.${current}
             ask-$current-to-stop.sh
