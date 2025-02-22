@@ -1,0 +1,73 @@
+From 9d8c66d3489347d615c81d40dcde89d2f73e6259 Mon Sep 17 00:00:00 2001
+From: Oliver Tappe <zooey@hirschkaefer.de>
+Date: Sun, 16 Feb 2025 13:48:54 +0000
+Subject: [PATCH] Add resource management callouts
+
+---
+ output/driver-alsa.go |  7 +++++++
+ player/player.go      | 10 ++++++++++
+ 2 files changed, 17 insertions(+)
+
+diff --git a/output/driver-alsa.go b/output/driver-alsa.go
+index a0d0867..dc145ac 100644
+--- a/output/driver-alsa.go
++++ b/output/driver-alsa.go
+@@ -11,6 +11,7 @@ import (
+ 	"errors"
+ 	"fmt"
+ 	"io"
++	"os/exec"
+ 	"sync"
+ 	"time"
+ 	"unsafe"
+@@ -101,6 +102,12 @@ func (out *alsaOutput) alsaError(name string, err C.int) error {
+ }
+ 
+ func (out *alsaOutput) setupPcm() error {
++	cmd := exec.Command("res-man.sh", "switch-to", "go-librespot")
++	if err := cmd.Run(); err != nil {
++		out.log.WithError(err).Warnf("unable to use res-man to switch to go-librespot")
++		return err
++	}
++
+ 	cdevice := C.CString(out.device)
+ 	defer C.free(unsafe.Pointer(cdevice))
+ 	if err := C.snd_pcm_open(&out.pcmHandle, cdevice, C.SND_PCM_STREAM_PLAYBACK, 0); err < 0 {
+diff --git a/player/player.go b/player/player.go
+index 0517a7f..ae2ba8b 100644
+--- a/player/player.go
++++ b/player/player.go
+@@ -4,6 +4,7 @@ import (
+ 	"context"
+ 	"fmt"
+ 	"net/http"
++	"os/exec"
+ 	"time"
+ 
+ 	librespot "github.com/devgianlu/go-librespot"
+@@ -246,6 +247,10 @@ loop:
+ 					} else {
+ 						cmd.resp <- nil
+ 						p.ev <- Event{Type: EventTypePaused}
++						cmd := exec.Command("res-man.sh", "mark-as-stopped", "go-librespot")
++						if err := cmd.Run(); err != nil {
++							p.log.WithError(err).Warnf("unable to use res-man to inform about stopped playback")
++						}
+ 					}
+ 				} else {
+ 					cmd.resp <- nil
+@@ -256,6 +261,11 @@ loop:
+ 					out = nil
+ 					outErr = make(<-chan error)
+ 
++					cmd := exec.Command("res-man.sh", "mark-as-stopped", "go-librespot")
++					if err := cmd.Run(); err != nil {
++						p.log.WithError(err).Warnf("unable to use res-man to inform about stopped playback")
++					}
++
+ 					p.log.Tracef("closed output device because of stop command")
+ 				}
+ 
+-- 
+2.25.1
+
