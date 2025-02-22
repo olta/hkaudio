@@ -1,5 +1,5 @@
 [Unit]
-Description=Spotify-client
+Description=Spotify-client (written in Go)
 Wants=network-online.target
 After=network-online.target
 

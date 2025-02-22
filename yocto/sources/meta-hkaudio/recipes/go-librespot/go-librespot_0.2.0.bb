@@ -1,4 +1,4 @@
-SUMMARY = "go-librespot"
+SUMMARY = "golibrespot - a Spotify client, written in Go"
 HOMEPAGE = "https://github.com/devgianlu/go-librespot"
 LICENSE = "GPL-3.0-only"
 LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=02f117cb774083d3ae16e938a01319c7"
@@ -14,9 +14,13 @@ inherit go systemd pkgconfig
 
 SRC_URI = " \
     git://${GO_IMPORT}.git;branch=master;protocol=https \
+    file://0001-Add-resource-management-callouts.patch;patchdir=${GO_INSTALL} \
+    file://0002-Support-different-output-formats-in-ALSA-driver-too.patch;patchdir=${GO_INSTALL} \
     file://config.yml.in \
     file://go-librespot-config.sh \
     file://go-librespot.service \
+    file://ask-go-librespot-to-stop.sh \
+    file://do-go-librespot-cmd.sh \
 "
 
 SRCREV = "v${PV}"
@@ -27,7 +31,7 @@ do_compile[network] = "1"
 DEPENDS += "alsa-lib libogg libvorbis"
 
 SYSTEMD_SERVICE:${PN} = "${PN}.service"
-SYSTEMD_AUTO_ENABLE = "disable"
+SYSTEMD_AUTO_ENABLE = "enable"
 
 RDEPENDS:${PN} += "bash"
 
@@ -48,9 +52,11 @@ do_install:append() {
     install -d ${D}${bindir}
     install -m 0755 ${GO_INSTALL}/daemon ${D}${bindir}/${PN}
     install -m 0755 ${WORKDIR}/${PN}-config.sh ${D}${bindir}/
+    install -m 0755 ${WORKDIR}/ask-${PN}-to-stop.sh ${D}${bindir}/
+    install -m 0755 ${WORKDIR}/do-${PN}-cmd.sh ${D}${bindir}/
 
     install -d ${D}${sysconfdir}/${PN}
-    install -m 0755 ${WORKDIR}/config.yml.in ${D}${sysconfdir}/${PN}/
+    install -m 0644 ${WORKDIR}/config.yml.in ${D}${sysconfdir}/${PN}/
 
     install -d ${D}${systemd_system_unitdir}
     install -m 0644 ${WORKDIR}/${PN}.service ${D}${systemd_system_unitdir}/
