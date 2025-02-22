@@ -7,9 +7,11 @@ EXTRA_IMAGE_FEATURES += "package-management"
 IMAGE_INSTALL += "\
   alsa-equal \
   alsa-utils \
+  atop \
   ca-certificates \
   curl \
   go-librespot \
+  htop \
   iwd \
   jq \
   librespot \
