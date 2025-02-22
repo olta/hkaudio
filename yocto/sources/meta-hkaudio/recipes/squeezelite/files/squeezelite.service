@@ -6,7 +6,7 @@ After=network-online.target
 [Service]
 Type=simple
 EnvironmentFile=/etc/room-config/current
-ExecStart=/usr/bin/squeezelite -n "${HKAUDIO_DEVICENAME}" -d all=info -C 60
+ExecStart=/usr/bin/squeezelite -n "${HKAUDIO_DEVICENAME}" -a 200:20 -d all=info -d output=debug -C 60
 Restart=on-failure
 
 [Install]
