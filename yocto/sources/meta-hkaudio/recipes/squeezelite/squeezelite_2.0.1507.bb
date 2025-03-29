@@ -33,7 +33,7 @@ inherit systemd
 SYSTEMD_SERVICE:${PN} = "${PN}.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
-RDEPENDS:${PN} += "bash libmad mpg123"
+RDEPENDS:${PN} += "bash faad2 flac libmad libvorbis mpg123"
 
 do_install() {
     install -d ${D}${bindir}
