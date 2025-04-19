@@ -10,6 +10,7 @@ IMAGE_INSTALL += "\
   atop \
   ca-certificates \
   curl \
+  daily-reboot \
   go-librespot \
   htop \
   iwd \
