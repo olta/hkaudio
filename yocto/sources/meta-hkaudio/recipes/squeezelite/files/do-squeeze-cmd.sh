@@ -7,6 +7,8 @@ if [[ -z $cmd ]]; then
     exit 5
 fi
 
+echo "$0: $@"
+
 . /etc/room-config/current
 
 id=$(cat /sys/class/net/wlan0/address)

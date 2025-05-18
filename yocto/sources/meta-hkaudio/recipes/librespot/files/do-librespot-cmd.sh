@@ -7,6 +7,8 @@ if [[ -z $cmd ]]; then
     exit 5
 fi
 
+echo "$0: $@"
+
 mkdir -p /run/librespot
 
 case "$cmd" in

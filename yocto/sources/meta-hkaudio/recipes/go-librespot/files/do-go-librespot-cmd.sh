@@ -7,6 +7,8 @@ if [[ -z $cmd ]]; then
     exit 5
 fi
 
+echo "$0: $@"
+
 mkdir -p /run/go-librespot
 
 baseUrl=http://localhost:3678/player
