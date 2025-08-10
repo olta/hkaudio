@@ -5,7 +5,7 @@ HOMEPAGE = "https://github.com/ralph-irving/squeezelite/"
 SECTION = "console/utils"
 
 LICENSE = "GPL-3.0-only"
-LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=d6cff05651abf8f14e462affd5db1645"
+LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=92e543e1d0236f609af745ec42dfb4e1"
 
 DEPENDS = " \
     alsa-lib \
@@ -16,7 +16,7 @@ DEPENDS = " \
     mpg123 \
 "
 
-SRCREV = "279ac086053239323f5c4df965342e3be5d10671"
+SRCREV = "72e1fd8abfa9b2f8e9636f033247526920878718"
 
 SRC_URI = " \
     git://github.com/ralph-irving/squeezelite.git;protocol=http;branch=master \
