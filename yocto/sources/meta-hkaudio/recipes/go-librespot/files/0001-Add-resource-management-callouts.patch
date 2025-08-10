@@ -9,7 +9,7 @@ Subject: [PATCH] Add resource management callouts
  2 files changed, 17 insertions(+)
 
 diff --git a/output/driver-alsa.go b/output/driver-alsa.go
-index a0d0867..dc145ac 100644
+index 745f8e0..86065f2 100644
 --- a/output/driver-alsa.go
 +++ b/output/driver-alsa.go
 @@ -11,6 +11,7 @@ import (
@@ -34,21 +34,35 @@ index a0d0867..dc145ac 100644
  	defer C.free(unsafe.Pointer(cdevice))
  	if err := C.snd_pcm_open(&out.pcmHandle, cdevice, C.SND_PCM_STREAM_PLAYBACK, 0); err < 0 {
 diff --git a/player/player.go b/player/player.go
-index 0517a7f..ae2ba8b 100644
+index 037e021..a2d4ec0 100644
 --- a/player/player.go
 +++ b/player/player.go
-@@ -4,6 +4,7 @@ import (
+@@ -3,6 +3,11 @@ package player
+ import (
  	"context"
  	"fmt"
- 	"net/http"
++	"net/http"
++	"net/url"
 +	"os/exec"
- 	"time"
- 
++	"time"
++
  	librespot "github.com/devgianlu/go-librespot"
-@@ -246,6 +247,10 @@ loop:
+ 	"github.com/devgianlu/go-librespot/audio"
+ 	"github.com/devgianlu/go-librespot/output"
+@@ -11,9 +16,6 @@ import (
+ 	"github.com/devgianlu/go-librespot/spclient"
+ 	"github.com/devgianlu/go-librespot/vorbis"
+ 	"golang.org/x/exp/rand"
+-	"net/http"
+-	"net/url"
+-	"time"
+ )
+ 
+ const SampleRate = 44100
+@@ -255,6 +257,10 @@ loop:
  					} else {
  						cmd.resp <- nil
- 						p.ev <- Event{Type: EventTypePaused}
+ 						p.ev <- Event{Type: EventTypePause}
 +						cmd := exec.Command("res-man.sh", "mark-as-stopped", "go-librespot")
 +						if err := cmd.Run(); err != nil {
 +							p.log.WithError(err).Warnf("unable to use res-man to inform about stopped playback")
@@ -56,7 +70,7 @@ index 0517a7f..ae2ba8b 100644
  					}
  				} else {
  					cmd.resp <- nil
-@@ -256,6 +261,11 @@ loop:
+@@ -265,6 +271,11 @@ loop:
  					out = nil
  					outErr = make(<-chan error)
  
@@ -70,4 +84,3 @@ index 0517a7f..ae2ba8b 100644
  
 -- 
 2.25.1
-
