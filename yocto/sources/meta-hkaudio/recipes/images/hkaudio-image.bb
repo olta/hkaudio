@@ -25,3 +25,6 @@ IMAGE_INSTALL += "\
   squeezelite \
   vim \
 "
+
+IMAGE_ROOTFS_SIZE = "1310720"
+IMAGE_OVERHEAD_FACTOR = "1.0"
