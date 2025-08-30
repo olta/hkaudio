@@ -1,14 +1,14 @@
-From 16a187a16f3bc6cb9b60585692354b11ee8070d7 Mon Sep 17 00:00:00 2001
+From 8145020c5ea08ceb7cfe668f11e57287b60ae6d7 Mon Sep 17 00:00:00 2001
 From: Oliver Tappe <zooey@hirschkaefer.de>
 Date: Sat, 22 Feb 2025 09:42:04 +0000
-Subject: [PATCH] Support different output formats in ALSA driver, too.
+Subject: [PATCH 2/2] Support different output formats in ALSA driver, too.
 
 ---
  output/driver-alsa.go | 54 ++++++++++++++++++++++++++++++++++++++++---
  1 file changed, 51 insertions(+), 3 deletions(-)
 
 diff --git a/output/driver-alsa.go b/output/driver-alsa.go
-index dc145ac..737175c 100644
+index 86065f2..2bf7a9b 100644
 --- a/output/driver-alsa.go
 +++ b/output/driver-alsa.go
 @@ -8,9 +8,11 @@ package output
