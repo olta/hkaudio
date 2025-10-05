@@ -15,7 +15,6 @@ IMAGE_INSTALL += "\
   htop \
   iwd \
   jq \
-  librespot \
   linux-firmware-mediatek \
   linux-firmware-mt76x2 \
   linux-firmware-rtl8822 \

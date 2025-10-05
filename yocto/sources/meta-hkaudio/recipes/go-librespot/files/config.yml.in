@@ -1,6 +1,6 @@
 log_level: info # Log level configuration (trace, debug, info, warn, error)
 device_id: '' # Spotify device ID (auto-generated)
-device_name: '@@HKAUDIO_DEVICENAME@@ (Go)' # Spotify device name
+device_name: '@@HKAUDIO_DEVICENAME@@' # Spotify device name
 device_type: speaker # Spotify device type (icon)
 audio_backend: alsa # Audio backend to use (alsa, pipe, pulseaudio)
 audio_device: default # ALSA audio device to use for playback
