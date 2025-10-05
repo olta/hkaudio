@@ -15,7 +15,6 @@ inherit go systemd pkgconfig
 SRC_URI = " \
     git://${GO_IMPORT}.git;branch=master;protocol=https \
     file://0001-Add-resource-management-callouts.patch;patchdir=${GO_INSTALL} \
-    file://0002-Support-different-output-formats-in-ALSA-driver-too.patch;patchdir=${GO_INSTALL} \
     file://config.yml.in \
     file://go-librespot-config.sh \
     file://go-librespot.service \
