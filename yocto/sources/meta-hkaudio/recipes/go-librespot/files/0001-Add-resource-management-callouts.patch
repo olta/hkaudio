@@ -1,7 +1,7 @@
 From 5745811a46ce8a2c764c5f3ee8c8ad8193973254 Mon Sep 17 00:00:00 2001
 From: Oliver Tappe <zooey@hirschkaefer.de>
 Date: Sun, 16 Feb 2025 13:48:54 +0000
-Subject: [PATCH 1/2] Add resource management callouts
+Subject: [PATCH] Add resource management callouts
 
 ---
  output/driver-alsa.go |  7 +++++++
@@ -9,7 +9,7 @@ Subject: [PATCH 1/2] Add resource management callouts
  2 files changed, 17 insertions(+)
 
 diff --git a/output/driver-alsa.go b/output/driver-alsa.go
-index 745f8e0..86065f2 100644
+index 239e66e..b3ac148 100644
 --- a/output/driver-alsa.go
 +++ b/output/driver-alsa.go
 @@ -11,6 +11,7 @@ import (
@@ -20,7 +20,7 @@ index 745f8e0..86065f2 100644
  	"sync"
  	"time"
  	"unsafe"
-@@ -101,6 +102,12 @@ func (out *alsaOutput) alsaError(name string, err C.int) error {
+@@ -111,6 +112,12 @@ func (out *alsaOutput) isFormatSupported(hwparams *C.snd_pcm_hw_params_t, format
  }
  
  func (out *alsaOutput) setupPcm() error {
@@ -34,18 +34,29 @@ index 745f8e0..86065f2 100644
  	defer C.free(unsafe.Pointer(cdevice))
  	if err := C.snd_pcm_open(&out.pcmHandle, cdevice, C.SND_PCM_STREAM_PLAYBACK, 0); err < 0 {
 diff --git a/player/player.go b/player/player.go
-index 2a87a3f..07b2e9b 100644
+index cdefca0..a34e5f7 100644
 --- a/player/player.go
 +++ b/player/player.go
-@@ -5,6 +5,7 @@ import (
- 	"fmt"
+@@ -7,6 +7,7 @@ import (
+ 	"math"
  	"net/http"
  	"net/url"
 +	"os/exec"
  	"time"
  
  	librespot "github.com/devgianlu/go-librespot"
-@@ -266,6 +267,10 @@ loop:
+@@ -261,6 +262,10 @@ loop:
+ 
+ 				if data.paused {
+ 					p.ev <- Event{Type: EventTypePause}
++					cmd := exec.Command("res-man.sh", "mark-as-stopped", "go-librespot")
++					if err := cmd.Run(); err != nil {
++						p.log.WithError(err).Warnf("unable to use res-man to inform about stopped playback")
++					}
+ 				} else {
+ 					p.ev <- Event{Type: EventTypePlay}
+ 				}
+@@ -282,6 +287,10 @@ loop:
  					} else {
  						cmd.resp <- nil
  						p.ev <- Event{Type: EventTypePause}
@@ -56,7 +67,7 @@ index 2a87a3f..07b2e9b 100644
  					}
  				} else {
  					cmd.resp <- nil
-@@ -276,6 +281,11 @@ loop:
+@@ -292,6 +301,11 @@ loop:
  					out = nil
  					outErr = make(<-chan error)
  
@@ -70,4 +81,3 @@ index 2a87a3f..07b2e9b 100644
  
 -- 
 2.25.1
-
