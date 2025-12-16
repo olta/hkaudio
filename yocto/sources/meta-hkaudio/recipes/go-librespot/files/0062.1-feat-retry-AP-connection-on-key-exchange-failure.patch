@@ -1,0 +1,75 @@
+From 63920cf3875ea89b56984963917f41bc57b4b165 Mon Sep 17 00:00:00 2001
+From: devgianlu <altomanigianluca@gmail.com>
+Date: Tue, 16 Dec 2025 13:44:24 +0100
+Subject: [PATCH] feat: retry AP connection on key exchange failure
+
+---
+ ap/ap.go           | 15 ++++++++++++++-
+ session/session.go |  8 +++-----
+ 2 files changed, 17 insertions(+), 6 deletions(-)
+
+diff --git a/ap/ap.go b/ap/ap.go
+index b20cf00..ef7757b 100644
+--- a/ap/ap.go
++++ b/ap/ap.go
+@@ -80,6 +80,12 @@ func (ap *Accesspoint) init(ctx context.Context) (err error) {
+ 		return fmt.Errorf("failed initializing diffiehellman: %w", err)
+ 	}
+ 
++	// close previous connection if any
++	if ap.conn != nil {
++		_ = ap.conn.Close()
++		ap.conn = nil
++	}
++
+ 	// open connection to accesspoint
+ 	attempts := 0
+ 	for {
+@@ -182,7 +188,14 @@ func (ap *Accesspoint) Connect(ctx context.Context, creds *pb.LoginCredentials)
+ 	ap.connMu.Lock()
+ 	defer ap.connMu.Unlock()
+ 
+-	return ap.connect(ctx, creds)
++	return backoff.Retry(func() error {
++		err := ap.connect(ctx, creds)
++		if err != nil {
++			ap.log.WithError(err).Warnf("failed connecting to accesspoint, retrying")
++		}
++
++		return err
++	}, backoff.WithContext(backoff.WithMaxRetries(backoff.NewConstantBackOff(500*time.Millisecond), 5), ctx))
+ }
+ 
+ func (ap *Accesspoint) connect(ctx context.Context, creds *pb.LoginCredentials) error {
+diff --git a/session/session.go b/session/session.go
+index 4f423a0..ec18c64 100644
+--- a/session/session.go
++++ b/session/session.go
+@@ -4,11 +4,12 @@ import (
+ 	"context"
+ 	"encoding/hex"
+ 	"fmt"
++	"net/http"
++	"time"
++
+ 	"github.com/devgianlu/go-librespot/events"
+ 	"github.com/devgianlu/go-librespot/mercury"
+ 	"github.com/devgianlu/go-librespot/player"
+-	"net/http"
+-	"time"
+ 
+ 	librespot "github.com/devgianlu/go-librespot"
+ 	"github.com/devgianlu/go-librespot/ap"
+@@ -93,9 +94,6 @@ func NewSessionFromOptions(ctx context.Context, opts *Options) (*Session, error)
+ 		return nil, fmt.Errorf("failed getting accesspoint from resolver: %w", err)
+ 	}
+ 	s.ap = ap.NewAccesspoint(opts.Log, apAddr, s.deviceId)
+-	if err != nil {
+-		return nil, fmt.Errorf("failed initializing accesspoint: %w", err)
+-	}
+ 
+ 	// authenticate with the accesspoint using the proper credentials
+ 	switch creds := opts.Credentials.(type) {
+-- 
+2.25.1
+
