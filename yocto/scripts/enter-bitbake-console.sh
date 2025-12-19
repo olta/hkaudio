@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cd /yocto
+cp bblayers.conf build/conf/
 rm -f build/conf/local.conf
 . sources/poky/oe-init-build-env
 
@@ -12,6 +13,7 @@ MACHINE = "raspberrypi0-2w-64"
 SERIAL_CONSOLES = "115200;ttyAMA0"
 SERIAL_CONSOLES_CHECK = "115200;ttyAMA0"
 EndOfHere
+
 
 mkdir /tmp/home
 export HOME=/tmp/home
