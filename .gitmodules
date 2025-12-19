@@ -7,3 +7,7 @@
 [submodule "yocto/sources/poky"]
 	path = yocto/sources/poky
 	url = git://git.yoctoproject.org/poky
+[submodule "yocto/sources/meta-lts-mixin-go"]
+	path = yocto/sources/meta-lts-mixin-go
+	url = https://git.yoctoproject.org/meta-lts-mixins
+	branch = scarthgap/go
