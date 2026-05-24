@@ -41,7 +41,7 @@ INSANE_SKIP:${PN}-dev = "buildpaths textrel"
 go_do_compile:prepend() {
     cd ${GO_INSTALL}
     $GO mod download -json
-    $GO build -v ./cmd/daemon
+    $GO build -o ./go-librespot ./cmd/daemon
 
     # make files in pkg dir writeable again so things like "bitbake -c clean" will work.
     chmod u+w -R ${WORKDIR}/build/pkg/mod
@@ -49,7 +49,7 @@ go_do_compile:prepend() {
 
 do_install:append() {
     install -d ${D}${bindir}
-    install -m 0755 ${GO_INSTALL}/daemon ${D}${bindir}/${PN}
+    install -m 0755 ${GO_INSTALL}/go-librespot ${D}${bindir}/
     install -m 0755 ${WORKDIR}/${PN}-config.sh ${D}${bindir}/
     install -m 0755 ${WORKDIR}/ask-${PN}-to-stop.sh ${D}${bindir}/
     install -m 0755 ${WORKDIR}/do-${PN}-cmd.sh ${D}${bindir}/
