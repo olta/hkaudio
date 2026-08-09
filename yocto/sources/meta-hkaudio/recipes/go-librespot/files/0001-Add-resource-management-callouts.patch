@@ -9,7 +9,7 @@ Subject: [PATCH] Add resource management callouts
  2 files changed, 17 insertions(+)
 
 diff --git a/output/driver-alsa.go b/output/driver-alsa.go
-index 239e66e..b3ac148 100644
+index 95cd9b4..c7096f7 100644
 --- a/output/driver-alsa.go
 +++ b/output/driver-alsa.go
 @@ -11,6 +11,7 @@ import (
@@ -20,10 +20,10 @@ index 239e66e..b3ac148 100644
  	"sync"
  	"time"
  	"unsafe"
-@@ -111,6 +112,12 @@ func (out *alsaOutput) isFormatSupported(hwparams *C.snd_pcm_hw_params_t, format
- }
+@@ -123,6 +124,12 @@ func (out *alsaOutput) setupPcm() error {
+ 	// is irrelevant.
+ 	C.snd_config_update_free_global()
  
- func (out *alsaOutput) setupPcm() error {
 +	cmd := exec.Command("res-man.sh", "switch-to", "go-librespot")
 +	if err := cmd.Run(); err != nil {
 +		out.log.WithError(err).Warnf("unable to use res-man to switch to go-librespot")
@@ -34,7 +34,7 @@ index 239e66e..b3ac148 100644
  	defer C.free(unsafe.Pointer(cdevice))
  	if err := C.snd_pcm_open(&out.pcmHandle, cdevice, C.SND_PCM_STREAM_PLAYBACK, 0); err < 0 {
 diff --git a/player/player.go b/player/player.go
-index cdefca0..a34e5f7 100644
+index 3ff8715..c7bb3ef 100644
 --- a/player/player.go
 +++ b/player/player.go
 @@ -7,6 +7,7 @@ import (
@@ -45,7 +45,7 @@ index cdefca0..a34e5f7 100644
  	"time"
  
  	librespot "github.com/devgianlu/go-librespot"
-@@ -261,6 +262,10 @@ loop:
+@@ -295,6 +296,10 @@ loop:
  
  				if data.paused {
  					p.ev <- Event{Type: EventTypePause}
@@ -56,8 +56,8 @@ index cdefca0..a34e5f7 100644
  				} else {
  					p.ev <- Event{Type: EventTypePlay}
  				}
-@@ -282,6 +287,10 @@ loop:
- 					} else {
+@@ -319,6 +324,10 @@ loop:
+ 						paused = true
  						cmd.resp <- nil
  						p.ev <- Event{Type: EventTypePause}
 +						cmd := exec.Command("res-man.sh", "mark-as-stopped", "go-librespot")
@@ -66,8 +66,8 @@ index cdefca0..a34e5f7 100644
 +						}
  					}
  				} else {
- 					cmd.resp <- nil
-@@ -292,6 +301,11 @@ loop:
+ 					paused = true
+@@ -330,6 +339,11 @@ loop:
  					out = nil
  					outErr = make(<-chan error)
  
