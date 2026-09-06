@@ -27,7 +27,7 @@ SRCREV = "v${PV}"
 # network is required by go to get dependent packages
 do_compile[network] = "1"
 
-DEPENDS += "alsa-lib flac libogg libvorbis"
+DEPENDS += "alsa-lib flac mpg123 libogg libvorbis"
 
 SYSTEMD_SERVICE:${PN} = "${PN}.service"
 SYSTEMD_AUTO_ENABLE = "enable"
