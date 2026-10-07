@@ -34,32 +34,32 @@ index 95cd9b4..c7096f7 100644
  	defer C.free(unsafe.Pointer(cdevice))
  	if err := C.snd_pcm_open(&out.pcmHandle, cdevice, C.SND_PCM_STREAM_PLAYBACK, 0); err < 0 {
 diff --git a/player/player.go b/player/player.go
-index 3ff8715..c7bb3ef 100644
+index 8d45e52..aab671f 100644
 --- a/player/player.go
 +++ b/player/player.go
-@@ -7,6 +7,7 @@ import (
+@@ -8,6 +8,7 @@ import (
  	"math"
  	"net/http"
  	"net/url"
 +	"os/exec"
+ 	"sync/atomic"
  	"time"
  
- 	librespot "github.com/devgianlu/go-librespot"
-@@ -295,6 +296,10 @@ loop:
+@@ -320,6 +321,10 @@ loop:
  
  				if data.paused {
- 					p.ev <- Event{Type: EventTypePause}
+ 					p.ev <- Event{Type: EventTypePause, StreamGen: p.streamGen.Load()}
 +					cmd := exec.Command("res-man.sh", "mark-as-stopped", "go-librespot")
 +					if err := cmd.Run(); err != nil {
 +						p.log.WithError(err).Warnf("unable to use res-man to inform about stopped playback")
 +					}
  				} else {
- 					p.ev <- Event{Type: EventTypePlay}
+ 					p.ev <- Event{Type: EventTypePlay, StreamGen: p.streamGen.Load()}
  				}
-@@ -319,6 +324,10 @@ loop:
+@@ -344,6 +349,10 @@ loop:
  						paused = true
  						cmd.resp <- nil
- 						p.ev <- Event{Type: EventTypePause}
+ 						p.ev <- Event{Type: EventTypePause, StreamGen: p.streamGen.Load()}
 +						cmd := exec.Command("res-man.sh", "mark-as-stopped", "go-librespot")
 +						if err := cmd.Run(); err != nil {
 +							p.log.WithError(err).Warnf("unable to use res-man to inform about stopped playback")
@@ -67,7 +67,7 @@ index 3ff8715..c7bb3ef 100644
  					}
  				} else {
  					paused = true
-@@ -330,6 +339,11 @@ loop:
+@@ -355,6 +364,11 @@ loop:
  					out = nil
  					outErr = make(<-chan error)
  
